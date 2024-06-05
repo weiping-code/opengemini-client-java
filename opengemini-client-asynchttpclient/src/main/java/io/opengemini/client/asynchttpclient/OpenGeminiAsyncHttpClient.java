@@ -3,11 +3,13 @@ package io.opengemini.client.asynchttpclient;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import io.netty.handler.codec.http.HttpStatusClass;
+import io.netty.handler.ssl.SslContext;
 import io.opengemini.client.api.AuthConfig;
 import io.opengemini.client.api.AuthType;
 import io.opengemini.client.api.OpenGeminiException;
 import io.opengemini.client.api.Query;
 import io.opengemini.client.api.QueryResult;
+import io.opengemini.client.api.TlsConfig;
 import io.opengemini.client.common.BaseAsyncClient;
 import io.opengemini.client.common.JacksonService;
 import org.asynchttpclient.AsyncHttpClient;
@@ -36,6 +38,10 @@ public class OpenGeminiAsyncHttpClient extends BaseAsyncClient {
         if (authConfig != null) {
             configClientAuth(authConfig, builder);
         }
+
+        if (conf.isTlsEnabled()) {
+            configClientTls(conf.getTlsConfig(), builder);
+        }
         return Dsl.asyncHttpClient(builder);
     }
 
@@ -43,6 +49,18 @@ public class OpenGeminiAsyncHttpClient extends BaseAsyncClient {
         if (AuthType.PASSWORD == authConfig.getAuthType()) {
             builder.addRequestFilter(new BasicAuthRequestFilter(authConfig.getUsername(), authConfig.getPassword()));
         }
+    }
+
+    private void configClientTls(TlsConfig tlsConfig, DefaultAsyncHttpClientConfig.Builder builder) {
+        SslContext context = SslContextUtil.buildFromJks(tlsConfig.getKeyStorePath(), tlsConfig.getKeyStorePassword(),
+                                                         tlsConfig.getTrustStorePath(),
+                                                         tlsConfig.getTrustStorePassword(),
+                                                         tlsConfig.isTlsVerifyDisabled(), tlsConfig.getTlsVersions(),
+                                                         tlsConfig.getTlsCipherSuites());
+        if (tlsConfig.isTlsHostnameVerifyDisabled()) {
+            builder.setDisableHttpsEndpointIdentificationAlgorithm(true);
+        }
+        builder.setSslContext(context);
     }
 
     /**

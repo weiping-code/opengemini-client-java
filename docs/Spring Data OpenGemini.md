@@ -265,7 +265,12 @@ public class OpenGeminiTemplate<T> {
 }
 ```
 
-其他类
+其中可能存在泛型类型擦除问题，可考虑通过以下几种方法之一处理：
+
+- 在OpenGeminiTemplate的方法上增加参数`Class<T> type`
+- 为每种类型声明一个OpenGeminiTemplate，构造方法传入参数`Class<T> type`
+
+## 其他类
 
 | 类名                        | 说明                                                         |
 | --------------------------- | ------------------------------------------------------------ |
@@ -273,5 +278,5 @@ public class OpenGeminiTemplate<T> {
 | OpenGeminiProperties        | 配置类，与SpringBoot配置对接                                 |
 | OpenGeminiClientFactory     | 根据配置生成OpenGeminiClient                                 |
 | OpenGeminiTemplate          | high-level操作模板类，复用OpenGeminiClientFactory所产生的OpenGeminiClient |
-| OpenGeminiPointConverter    | 根据注解在Point对象与POJO之间转换                            |
+| OpenGeminiPointSerializer   | 根据注解在Point对象与POJO之间转换                            |
 

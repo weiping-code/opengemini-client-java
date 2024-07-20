@@ -18,6 +18,7 @@
         <module>opengemini-client-reactor</module>
         <module>opengemini-client-scala</module>
         <module>opengemini-client-test-common</module>
+        <module>spring-data-opengemini</module>
     </modules>
 
     <properties>

@@ -5,4 +5,7 @@ package io.opengemini.client.spring.data.core;
  * A useful option for extensibility and testability (as it can be easily mocked or stubbed).
  */
 public interface OpenGeminiOperations {
+
+    <T> MeasurementOperations<T> opsForMeasurement(Class<T> clazz);
+
 }

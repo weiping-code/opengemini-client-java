@@ -1,5 +1,7 @@
 package io.opengemini.client.spring.data.annotation;
 
+import io.opengemini.client.spring.data.core.MeasurementScanRegistrar;
+import org.springframework.context.annotation.Import;
 import org.springframework.core.annotation.AliasFor;
 
 import java.lang.annotation.ElementType;
@@ -9,6 +11,7 @@ import java.lang.annotation.Target;
 
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
+@Import(MeasurementScanRegistrar.class)
 public @interface MeasurementScan {
 
     /**

@@ -6,7 +6,9 @@ import io.opengemini.client.api.Precision;
 import io.opengemini.client.api.QueryResult;
 import io.opengemini.client.api.Series;
 import io.opengemini.client.api.SeriesResult;
+import io.opengemini.client.spring.data.annotation.Database;
 import io.opengemini.client.spring.data.annotation.Measurement;
+import io.opengemini.client.spring.data.annotation.RetentionPolicy;
 import io.opengemini.client.spring.data.annotation.Tag;
 import io.opengemini.client.spring.data.annotation.Time;
 import lombok.Getter;
@@ -22,6 +24,7 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeFormatterBuilder;
 import java.time.temporal.ChronoField;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -79,11 +82,33 @@ public class DefaultOpenGeminiSerializer<T> implements OpenGeminiSerializer<T> {
                 fieldMap.put(fieldMetaData.getName(), fieldMetaData);
             }
         }
-        return new ClassMetaData<>(clazz, msAnnotation.name(), fieldMap);
+
+        Database dbAnnotation = clazz.getAnnotation(Database.class);
+        String databaseName = dbAnnotation != null ? dbAnnotation.name() : null;
+
+        RetentionPolicy rpAnnotation = clazz.getAnnotation(RetentionPolicy.class);
+        String retentionPolicyName = rpAnnotation != null ? rpAnnotation.name() : null;
+
+        return new ClassMetaData<>(clazz, databaseName, retentionPolicyName, msAnnotation.name(), fieldMap);
     }
 
     @Override
-    public Point serialize(T t) throws OpenGeminiException {
+    public String getDatabaseName() {
+        return classMetaData.getDatabaseName();
+    }
+
+    @Override
+    public String getRetentionPolicyName() {
+        return classMetaData.getRetentionPolicyName();
+    }
+
+    @Override
+    public String getMeasurementName() {
+        return classMetaData.getMeasurementName();
+    }
+
+    @Override
+    public Point serialize(T pojo) throws OpenGeminiException {
         Point point = new Point();
         point.setMeasurement(classMetaData.getMeasurementName());
         point.setFields(new HashMap<>());
@@ -91,12 +116,24 @@ public class DefaultOpenGeminiSerializer<T> implements OpenGeminiSerializer<T> {
 
         try {
             for (AbstractFieldMetaData fieldMetaData : classMetaData.getFieldMap().values()) {
-                fieldMetaData.fillPoint(point, t);
+                fieldMetaData.fillPoint(point, pojo);
             }
             return point;
         } catch (IllegalAccessException e) {
             throw new OpenGeminiException(e);
         }
+    }
+
+    @Override
+    public List<Point> serialize(List<T> pojoList) throws OpenGeminiException {
+        if (CollectionUtils.isEmpty(pojoList)) {
+            return Collections.emptyList();
+        }
+        List<Point> points = new LinkedList<>();
+        for (T pojo : pojoList) {
+            points.add(serialize(pojo));
+        }
+        return points;
     }
 
     @Override
@@ -148,8 +185,8 @@ public class DefaultOpenGeminiSerializer<T> implements OpenGeminiSerializer<T> {
                     pojo = null;
                 }
             }
-        } catch (InstantiationException | IllegalAccessException | NoSuchMethodException
-                 | InvocationTargetException e) {
+        } catch (InstantiationException | IllegalAccessException | NoSuchMethodException |
+                 InvocationTargetException e) {
             throw new OpenGeminiException(e);
         }
         return pojoList;
@@ -182,11 +219,19 @@ public class DefaultOpenGeminiSerializer<T> implements OpenGeminiSerializer<T> {
     @Getter
     private static class ClassMetaData<T> {
         private final Class<T> clazz;
+        private final String databaseName;
+        private final String retentionPolicyName;
         private final String measurementName;
         private final Map<String, AbstractFieldMetaData> fieldMap;
 
-        public ClassMetaData(Class<T> clazz, String measurementName, Map<String, AbstractFieldMetaData> fieldMap) {
+        public ClassMetaData(Class<T> clazz,
+                             String databaseName,
+                             String retentionPolicyName,
+                             String measurementName,
+                             Map<String, AbstractFieldMetaData> fieldMap) {
             this.clazz = clazz;
+            this.databaseName = databaseName;
+            this.retentionPolicyName = retentionPolicyName;
             this.measurementName = measurementName;
             this.fieldMap = fieldMap;
         }

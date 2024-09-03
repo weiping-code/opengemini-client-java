@@ -10,6 +10,16 @@ import org.jetbrains.annotations.NotNull;
 
 public class OpenGeminiJdkClientFactory {
     public static OpenGeminiJdkClient create(@NotNull Configuration configuration) throws OpenGeminiException {
+        setupConfiguration(configuration);
+        return new OpenGeminiJdkClient(configuration);
+    }
+
+    public static OpenGeminiSyncJdkClient createSync(@NotNull Configuration configuration) throws OpenGeminiException {
+        setupConfiguration(configuration);
+        return new OpenGeminiSyncJdkClient(configuration);
+    }
+
+    private static void setupConfiguration(@NotNull Configuration configuration) throws OpenGeminiException {
         if (configuration.getAddresses() == null || configuration.getAddresses().isEmpty()) {
             throw new OpenGeminiException("must have at least one address");
         }
@@ -43,6 +53,5 @@ public class OpenGeminiJdkClientFactory {
         if (configuration.getConnectTimeout() == null || configuration.getConnectTimeout().isNegative()) {
             configuration.setConnectTimeout(OpengeminiConst.DEFAULT_CONNECT_TIMEOUT);
         }
-        return new OpenGeminiJdkClient(configuration);
     }
 }

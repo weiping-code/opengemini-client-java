@@ -16,7 +16,6 @@
 
 package io.opengemini.client.impl.grpc;
 
-import io.opengemini.client.api.grpc.GrpcConfig;
 import io.opengemini.proto.PingRequest;
 import io.opengemini.proto.PingResponse;
 import io.opengemini.proto.WriteRequest;

@@ -14,32 +14,4 @@
  * limitations under the License.
  */
 
-package io.opengemini.client.api.grpc;
-
-/**
- * ResponseCode represents the response code from gRPC write service.
- */
-public enum ResponseCode {
-    Success(0),
-    Partial(1),
-    Failed(2);
-
-    private final int value;
-
-    ResponseCode(int value) {
-        this.value = value;
-    }
-
-    public int getValue() {
-        return value;
-    }
-
-    public static ResponseCode forNumber(int value) {
-        for (ResponseCode code : values()) {
-            if (code.value == value) {
-                return code;
-            }
-        }
-        return Success;
-    }
-}
+package io.opengemini.client.impl.grpc.record;

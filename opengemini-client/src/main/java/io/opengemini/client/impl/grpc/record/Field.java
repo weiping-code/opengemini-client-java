@@ -16,7 +16,6 @@
 
 package io.opengemini.client.impl.grpc.record;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;

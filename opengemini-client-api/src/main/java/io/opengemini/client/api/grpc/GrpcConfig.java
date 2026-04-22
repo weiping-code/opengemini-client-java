@@ -16,8 +16,8 @@
 
 package io.opengemini.client.api.grpc;
 
-import io.opengemini.client.api.AuthConfig;
 import io.opengemini.client.api.Address;
+import io.opengemini.client.api.AuthConfig;
 import io.opengemini.client.api.TlsConfig;
 import lombok.Getter;
 import lombok.Setter;

@@ -18,7 +18,6 @@ package io.opengemini.client.impl.grpc;
 
 import io.opengemini.client.api.Address;
 import io.opengemini.client.api.OpenGeminiException;
-import io.opengemini.client.api.grpc.CompressMethod;
 import io.opengemini.client.api.grpc.GrpcConfig;
 import io.opengemini.client.api.grpc.ResponseCode;
 import io.opengemini.client.api.grpc.ServerStatus;
@@ -30,10 +29,8 @@ import io.opengemini.proto.WriteResponse;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.nio.ByteBuffer;
 import java.util.List;
 import java.util.Random;
-import java.util.concurrent.TimeUnit;
 
 /**
  * Implementation of OpenGeminiGrpcClient.

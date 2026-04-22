@@ -16,6 +16,8 @@
 
 package io.opengemini.proto;
 
+import java.nio.charset.StandardCharsets;
+
 /**
  * Manual proto implementation for PingRequest.
  */
@@ -39,13 +41,13 @@ public class PingRequest {
         if (clientId == null || clientId.isEmpty()) {
             return new byte[0];
         }
-        return clientId.getBytes();
+        return clientId.getBytes(StandardCharsets.UTF_8);
     }
 
     public static PingRequest parseFrom(byte[] data) {
         PingRequest request = new PingRequest();
         if (data != null && data.length > 0) {
-            request.setClientId(new String(data));
+            request.setClientId(new String(data, StandardCharsets.UTF_8));
         }
         return request;
     }

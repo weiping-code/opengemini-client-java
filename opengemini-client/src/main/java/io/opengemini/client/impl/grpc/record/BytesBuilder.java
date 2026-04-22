@@ -16,6 +16,7 @@
 
 package io.opengemini.client.impl.grpc.record;
 
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 
 /**
@@ -56,7 +57,9 @@ public class BytesBuilder {
     }
 
     public BytesBuilder append(byte[] b) {
-        if (b == null) return this;
+        if (b == null) {
+            return this;
+        }
         ensureCapacity(b.length);
         System.arraycopy(b, 0, buffer, position, b.length);
         position += b.length;
@@ -164,7 +167,7 @@ public class BytesBuilder {
         if (s == null) {
             return appendUint16(b, 0);
         }
-        byte[] strBytes = s.getBytes();
+        byte[] strBytes = s.getBytes(StandardCharsets.UTF_8);
         b = appendUint16(b, strBytes.length);
         byte[] result = new byte[b.length + strBytes.length];
         System.arraycopy(b, 0, result, 0, b.length);
@@ -177,7 +180,7 @@ public class BytesBuilder {
             appendUint16(0);
             return this;
         }
-        byte[] strBytes = s.getBytes();
+        byte[] strBytes = s.getBytes(StandardCharsets.UTF_8);
         appendUint16(strBytes.length);
         ensureCapacity(strBytes.length);
         System.arraycopy(strBytes, 0, buffer, position, strBytes.length);
@@ -222,7 +225,7 @@ public class BytesBuilder {
         if (s == null) {
             return SIZE_OF_UINT16;
         }
-        return SIZE_OF_UINT16 + s.getBytes().length;
+        return SIZE_OF_UINT16 + s.getBytes(StandardCharsets.UTF_8).length;
     }
 
     public static int sizeOfInt() {

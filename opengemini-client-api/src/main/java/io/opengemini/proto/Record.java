@@ -18,6 +18,8 @@ package io.opengemini.proto;
 
 import io.opengemini.client.api.grpc.CompressMethod;
 
+import java.nio.charset.StandardCharsets;
+
 /**
  * Manual proto implementation for Record.
  */
@@ -90,7 +92,7 @@ public class Record {
         if (s == null) {
             return writeUint16(b, 0);
         }
-        byte[] strBytes = s.getBytes();
+        byte[] strBytes = s.getBytes(StandardCharsets.UTF_8);
         b = writeUint16(b, strBytes.length);
         byte[] result = new byte[b.length + strBytes.length];
         System.arraycopy(b, 0, result, 0, b.length);

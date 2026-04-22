@@ -229,7 +229,7 @@
             <plugin>
                 <groupId>org.xolstice.maven.plugins</groupId>
                 <artifactId>protobuf-maven-plugin</artifactId>
-                <version>${maven-protobuf-maven-plugin}</version>
+                <version>${maven-protobuf-maven-plugin.version}</version>
                 <configuration>
                     <protocArtifact>com.google.protobuf:protoc:${protoc.version}:exe:${os.detected.classifier}
                     </protocArtifact>
@@ -245,20 +245,6 @@
                         <configuration>
                             <pluginId>grpc-java</pluginId>
                             <pluginArtifact>io.grpc:protoc-gen-grpc-java:${grpc.version}:exe:${os.detected.classifier}
-                            </pluginArtifact>
-                        </configuration>
-                    </execution>
-                    <!-- Execution for vertx-grpc -->
-                    <execution>
-                        <id>vertx-grpc</id>
-                        <goals>
-                            <goal>compile</goal>
-                            <goal>compile-custom</goal>
-                        </goals>
-                        <configuration>
-                            <pluginId>grpc-vertx</pluginId>
-                            <pluginArtifact>
-                                io.vertx:vertx-grpc-protoc-plugin:${vertx.version}:exe:${os.detected.classifier}
                             </pluginArtifact>
                         </configuration>
                     </execution>

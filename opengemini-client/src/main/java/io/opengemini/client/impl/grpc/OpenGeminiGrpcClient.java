@@ -14,32 +14,22 @@
  * limitations under the License.
  */
 
-package io.opengemini.client.api;
+package io.opengemini.client.impl.grpc;
 
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import io.opengemini.client.api.grpc.GrpcConfig;
+import io.opengemini.proto.PingRequest;
+import io.opengemini.proto.PingResponse;
+import io.opengemini.proto.WriteRequest;
+import io.opengemini.proto.WriteResponse;
 
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
-public class TlsConfig {
-    public String keyStorePath;
+/**
+ * OpenGeminiGrpcClient interface for gRPC write operations.
+ */
+public interface OpenGeminiGrpcClient {
 
-    @ToString.Exclude
-    public char[] keyStorePassword;
+    WriteResponse write(WriteRequest request) throws Exception;
 
-    public String trustStorePath;
+    PingResponse ping(PingRequest request);
 
-    @ToString.Exclude
-    public char[] trustStorePassword;
-
-    public boolean verifyDisabled;
-
-    public boolean hostnameVerifyDisabled;
-
-    public String[] versions;
-
-    public String[] cipherSuites;
+    void close();
 }

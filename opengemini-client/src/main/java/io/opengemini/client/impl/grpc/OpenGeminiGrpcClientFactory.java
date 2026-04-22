@@ -14,32 +14,16 @@
  * limitations under the License.
  */
 
-package io.opengemini.client.api;
+package io.opengemini.client.impl.grpc;
 
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import io.opengemini.client.api.grpc.GrpcConfig;
 
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
-public class TlsConfig {
-    public String keyStorePath;
+/**
+ * Factory class for creating OpenGeminiGrpcClient instances.
+ */
+public class OpenGeminiGrpcClientFactory {
 
-    @ToString.Exclude
-    public char[] keyStorePassword;
-
-    public String trustStorePath;
-
-    @ToString.Exclude
-    public char[] trustStorePassword;
-
-    public boolean verifyDisabled;
-
-    public boolean hostnameVerifyDisabled;
-
-    public String[] versions;
-
-    public String[] cipherSuites;
+    public static OpenGeminiGrpcClient create(GrpcConfig config) {
+        return new OpenGeminiGrpcClientImpl(config);
+    }
 }

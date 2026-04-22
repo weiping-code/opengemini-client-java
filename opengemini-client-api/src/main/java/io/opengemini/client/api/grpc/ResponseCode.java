@@ -14,32 +14,32 @@
  * limitations under the License.
  */
 
-package io.opengemini.client.api;
+package io.opengemini.client.api.grpc;
 
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+/**
+ * ResponseCode represents the response code from gRPC write service.
+ */
+public enum ResponseCode {
+    Success(0),
+    Partial(1),
+    Failed(2);
 
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
-public class TlsConfig {
-    public String keyStorePath;
+    private final int value;
 
-    @ToString.Exclude
-    public char[] keyStorePassword;
+    ResponseCode(int value) {
+        this.value = value;
+    }
 
-    public String trustStorePath;
+    public int getValue() {
+        return value;
+    }
 
-    @ToString.Exclude
-    public char[] trustStorePassword;
-
-    public boolean verifyDisabled;
-
-    public boolean hostnameVerifyDisabled;
-
-    public String[] versions;
-
-    public String[] cipherSuites;
+    public static ResponseCode forNumber(int value) {
+        for (ResponseCode code : values()) {
+            if (code.value == value) {
+                return code;
+            }
+        }
+        return Success;
+    }
 }

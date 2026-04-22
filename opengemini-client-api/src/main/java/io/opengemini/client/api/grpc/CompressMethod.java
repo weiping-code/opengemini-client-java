@@ -14,32 +14,30 @@
  * limitations under the License.
  */
 
-package io.opengemini.client.api;
+package io.opengemini.client.api.grpc;
 
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+public enum CompressMethod {
+    UNCOMPRESSED(0),
+    LZ4_FAST(1),
+    ZSTD_FAST(2),
+    SNAPPY(3);
 
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
-public class TlsConfig {
-    public String keyStorePath;
+    private final int value;
 
-    @ToString.Exclude
-    public char[] keyStorePassword;
+    CompressMethod(int value) {
+        this.value = value;
+    }
 
-    public String trustStorePath;
+    public int getValue() {
+        return value;
+    }
 
-    @ToString.Exclude
-    public char[] trustStorePassword;
-
-    public boolean verifyDisabled;
-
-    public boolean hostnameVerifyDisabled;
-
-    public String[] versions;
-
-    public String[] cipherSuites;
+    public static CompressMethod forNumber(int value) {
+        for (CompressMethod method : values()) {
+            if (method.value == value) {
+                return method;
+            }
+        }
+        return UNCOMPRESSED;
+    }
 }

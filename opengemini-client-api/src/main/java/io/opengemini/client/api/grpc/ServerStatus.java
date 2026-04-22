@@ -14,32 +14,32 @@
  * limitations under the License.
  */
 
-package io.opengemini.client.api;
+package io.opengemini.client.api.grpc;
 
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+/**
+ * ServerStatus represents the server status from gRPC ping response.
+ */
+public enum ServerStatus {
+    Up(0),
+    Down(1),
+    Unknown(99);
 
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
-public class TlsConfig {
-    public String keyStorePath;
+    private final int value;
 
-    @ToString.Exclude
-    public char[] keyStorePassword;
+    ServerStatus(int value) {
+        this.value = value;
+    }
 
-    public String trustStorePath;
+    public int getValue() {
+        return value;
+    }
 
-    @ToString.Exclude
-    public char[] trustStorePassword;
-
-    public boolean verifyDisabled;
-
-    public boolean hostnameVerifyDisabled;
-
-    public String[] versions;
-
-    public String[] cipherSuites;
+    public static ServerStatus forNumber(int value) {
+        for (ServerStatus status : values()) {
+            if (status.value == value) {
+                return status;
+            }
+        }
+        return Unknown;
+    }
 }

@@ -78,7 +78,7 @@
         <maven-source-plugin.version>3.3.1</maven-source-plugin.version>
         <maven-surefire-plugin.version>3.5.0</maven-surefire-plugin.version>
         <maven-os-maven-plugin.version>1.7.1</maven-os-maven-plugin.version>
-        <maven-protobuf-maven-plugin>0.6.1</maven-protobuf-maven-plugin>
+        <maven-protobuf-maven-plugin.version>0.6.1</maven-protobuf-maven-plugin.version>
         <nexus-staging-plugin.version>1.6.13</nexus-staging-plugin.version>
         <scala-maven-plugin.version>4.9.2</scala-maven-plugin.version>
         <spotbugs-maven-plugin.version>4.9.1.0</spotbugs-maven-plugin.version>
@@ -204,7 +204,7 @@
             <plugin>
                 <groupId>org.xolstice.maven.plugins</groupId>
                 <artifactId>protobuf-maven-plugin</artifactId>
-                <version>${protobuf-maven-plugin.version}</version>
+                <version>${maven-protobuf-maven-plugin.version}</version>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>

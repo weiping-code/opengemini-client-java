@@ -1,2 +1,1 @@
 io.opengemini.client.spring.data.config.OpenGeminiAutoConfiguration
-io.opengemini.client.spring.data.config.OpenGeminiGrpcAutoConfiguration
